@@ -4,109 +4,125 @@ namespace SRC;
 
 class Funcoes
 {
-    /*
 
-    Desenvolva uma função que receba como parâmetro o ano e retorne o século ao qual este ano faz parte. O primeiro século começa no ano 1 e termina no ano 100, o segundo século começa no ano 101 e termina no 200.
+    public function SeculoAno(int $ano): string
+    {
 
-	Exemplos para teste:
+        $seculo = 0;
 
-	Ano 1905 = século 20
-	Ano 1700 = século 17
+        $divisão = $ano / 100;
 
-     * */
-    public function SeculoAno(int $ano): int {
-        
+        if ($ano % 100 == 0) {
+
+            $seculo = $divisão;
+        } else {
+            $seculo = $divisão + 1;
+        }
+
+        return floor($seculo);
     }
 
-    
-	
-	
-	
-	
-	
-	
-	
-	/*
+    // Função para verificar se é número primo
+    public function NumeroPrimo(int $numero): bool
+    {
+        // Verifica se o número passado pode ser dividido por algum dos números dentro do intervalo 2 -> $numero.
+        for ($i = 2; $i < $numero; $i++) {
+            if ($numero % $i == 0) {
+                return false;
+            }
+        }
 
-    Desenvolva uma função que receba como parâmetro um número inteiro e retorne o numero primo imediatamente anterior ao número recebido
+        return true;
+    }
 
-    Exemplo para teste:
+    public function PrimoAnterior(int $numero): int
+    {
 
-    Numero = 10 resposta = 7
-    Número = 29 resposta = 23
+        for ($i = $numero - 1; $i > 0; $i--) {
+            if ($this->NumeroPrimo($i) == true) {
+                return $i;
+            }
+        }
 
-     * */
-    public function PrimoAnterior(int $numero): int {
-        
+        return "Nenhum número primo encontrado";
     }
 
 
+    public function SegundoMaior(array $arr): int
+    {
+        $maior = 0;
+        $segMaior = 0;
+        $comparador = 0;
 
+        foreach ($arr as $array) {
+            $comparador = max($array);
 
+            if ($comparador >= $maior) {
+                $segMaior = $maior;
+                $maior = $comparador;
+            } elseif ($comparador >= $segMaior) {
+                $segMaior = $comparador;
+            }
+        }
 
-
-
-
-
-
-    /*
-
-    Desenvolva uma função que receba como parâmetro um array multidimensional de números inteiros e retorne como resposta o segundo maior número.
-
-    Exemplo para teste:
-
-	Array multidimensional = array (
-	array(25,22,18),
-	array(10,15,13),
-	array(24,5,2),
-	array(80,17,15)
-	);
-
-	resposta = 25
-
-     * */
-    public function SegundoMaior(array $arr): int {
-        
+        return $segMaior;
     }
-	
-	
-	
-	
-	
-	
-	
 
-    /*
-   Desenvolva uma função que receba como parâmetro um array de números inteiros e responda com TRUE or FALSE se é possível obter uma sequencia crescente removendo apenas um elemento do array.
+    //função para validar sequência
+    public function validaSequencia($array)
+    {
 
-	Exemplos para teste 
+        $i = 1;
+        $sequencia = true;
 
-	Obs.:-  É Importante  realizar todos os testes abaixo para garantir o funcionamento correto.
-         -  Sequencias com apenas um elemento são consideradas crescentes
+        while ($i < sizeof($array) and $sequencia == 1) {
 
-    [1, 3, 2, 1]  false
-    [1, 3, 2]  true
-    [1, 2, 1, 2]  false
-    [3, 6, 5, 8, 10, 20, 15] false
-    [1, 1, 2, 3, 4, 4] false
-    [1, 4, 10, 4, 2] false
-    [10, 1, 2, 3, 4, 5] true
-    [1, 1, 1, 2, 3] false
-    [0, -2, 5, 6] true
-    [1, 2, 3, 4, 5, 3, 5, 6] false
-    [40, 50, 60, 10, 20, 30] false
-    [1, 1] true
-    [1, 2, 5, 3, 5] true
-    [1, 2, 5, 5, 5] false
-    [10, 1, 2, 3, 4, 5, 6, 1] false
-    [1, 2, 3, 4, 3, 6] true
-    [1, 2, 3, 4, 99, 5, 6] true
-    [123, -17, -5, 1, 2, 3, 12, 43, 45] true
-    [3, 5, 67, 98, 3] true
+            if ($array[$i] > $array[$i - 1])
+                $i++;
+            else
+                $sequencia = false;
+        }
 
-     * */
-    
-	public function SequenciaCrescente(array $arr): boolean {
-        
+        //retorna 1 caso o array for sequência e 0 caso não seja
+        return $sequencia;
+    }
+
+    public function sequenciaCrescente($array)
+    {
+
+        $i = 0;
+        $arrayCopy = $array;
+
+        //flag que para o laço se identificar que o array é uma sequência
+        $parou = 0;
+
+        while ($i <= sizeof($array) and $parou == 0) {
+
+            if ($this->validaSequencia($arrayCopy) == true) {
+                $parou = 1;
+            } else //se não for sequência, vai remover posição por posição para identificar se pode ser sequência
+            {
+                //como só pode remover 1 posição, o array é restaurado ao original
+                $arrayCopy = $array;
+
+                //removendo posição $i
+                unset($arrayCopy[$i]);
+
+                //reajustando o índice
+                $arrayCopy = array_values($arrayCopy);
+                $i++;
+            }
+        }
+
+        //caso a flag $parou seja 1, a sequêcia retorna TRUE, se não, FALSE
+        if ($parou == 1) {
+            echo "TRUE\n";
+            $retorno = TRUE;
+        } else {
+            echo "FALSE\n";
+            $retorno = FALSE;
+        }
+
+        return $retorno;
     }
 }
